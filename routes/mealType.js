@@ -5,9 +5,15 @@ const {
   updateMealTypes,
   deleteMealTypes,
 } = require("../controllers/mealType");
+
+const { protect } = require("../middleware/adminAuth");
+
 const router = express.Router();
 
-router.route("/").get(getMealTypes).post(postMealTypes);
-router.route("/:id").put(updateMealTypes).delete(deleteMealTypes);
+router.route("/").get(getMealTypes).post(protect, postMealTypes);
+router
+  .route("/:id")
+  .put(protect, updateMealTypes)
+  .delete(protect, deleteMealTypes);
 
 module.exports = router;

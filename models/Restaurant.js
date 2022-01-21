@@ -31,6 +31,11 @@ const RestaurantSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    averageRating: {
+      type: Number,
+      min: 1,
+      max: 10,
+    },
   },
   {
     toJSON: { virtuals: true },

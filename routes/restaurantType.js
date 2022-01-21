@@ -5,9 +5,15 @@ const {
   updateRestaurantTypes,
   deleteRestaurantTypes,
 } = require("../controllers/restaurantType");
+
+const { protect } = require("../middleware/adminAuth");
+
 const router = express.Router();
 
-router.route("/").get(getRestaurantTypes).post(postRestaurantTypes);
-router.route("/:id").put(updateRestaurantTypes).delete(deleteRestaurantTypes);
+router.route("/").get(getRestaurantTypes).post(protect, postRestaurantTypes);
+router
+  .route("/:id")
+  .put(protect, updateRestaurantTypes)
+  .delete(protect, deleteRestaurantTypes);
 
 module.exports = router;
