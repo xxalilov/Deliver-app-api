@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { deleteFile } = require("../utils/file");
 
 const RestaurantSchema = new mongoose.Schema(
   {

@@ -73,12 +73,16 @@ exports.loginAdmin = asyncHandler(async (req, res, next) => {
 // @route   GET /api/v1/admin/me
 // @access  Private
 exports.getAdmin = asyncHandler(async (req, res, next) => {
-  const admin = await Admin.findById(req.admin.id);
+  try {
+    const admin = await Admin.findById(req.admin.id);
 
-  res.status(200).json({
-    success: true,
-    data: admin,
-  });
+    res.status(200).json({
+      success: true,
+      data: admin,
+    });
+  } catch (err) {
+    next(new ErrorResponse(err, 400));
+  }
 });
 
 // @desc    Forgot password
@@ -112,7 +116,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
 
     await admin.save({ validateBeforeSave: false });
 
-    return next(new ErrorResponse("Email could not be sent", 500));
+    next(new ErrorResponse("Email could not be sent", 500));
   }
 
   res.status(200).json({
@@ -158,7 +162,7 @@ exports.updateAdminPassword = asyncHandler(async (req, res, next) => {
 
     sendTokenResponse(admin, 200, res);
   } catch (err) {
-    return next(new ErrorResponse(err), 400);
+    next(new ErrorResponse(err), 400);
   }
 });
 

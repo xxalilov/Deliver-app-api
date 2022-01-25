@@ -1,4 +1,7 @@
 const express = require("express");
+
+const { protect } = require("../middleware/userAuth");
+
 const {
   registerUser,
   checkCode,
@@ -14,7 +17,10 @@ const router = express.Router();
 router.use("/:userId/order", orderRouter);
 
 router.get("/", getAllUsers);
-router.route("/:id").put(updateUserDetails).delete(deleteUser);
+router
+  .route("/:id")
+  .put(protect, updateUserDetails)
+  .delete(protect, deleteUser);
 
 router.post("/register", registerUser);
 router.post("/register/checkcode", checkCode);

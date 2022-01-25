@@ -20,6 +20,7 @@ const userRoute = require("./routes/user");
 const orderRoute = require("./routes/order");
 const deliverRoute = require("./routes/deliver");
 const reviewRoute = require("./routes/review");
+const orderHistoryRoute = require("./routes/orderHistory");
 
 // Load env vars
 dotenv.config({ path: "./config/config.env" });
@@ -59,6 +60,7 @@ app.use("/api/v1/user", userRoute);
 app.use("/api/v1/orders", orderRoute);
 app.use("/api/v1/delivers", deliverRoute);
 app.use("/api/v1/reviews", reviewRoute);
+app.use("/api/v1/orderhistory", orderHistoryRoute);
 app.use(errorHandler);
 
 // Add headers before the routes are defined

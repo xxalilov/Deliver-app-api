@@ -10,7 +10,7 @@ const {
 
 const router = express.Router({ mergeParams: true });
 
-router.route("/").get(getOrders).post(createOrder).get(orderToDeliver);
+router.route("/").get(getOrders).post(createOrder);
 router.route("/:id").get(getOrder).put(updateOrderPosition).delete(deleteOrder);
 router.route("/:id/deliver").put(orderToDeliver);
 
