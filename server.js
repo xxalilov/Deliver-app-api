@@ -73,7 +73,10 @@ app.use(hpp());
 app.use(cors());
 
 // Files folder
-app.use("/public/images", express.static(path.join(__dirname, "public")));
+app.use(
+  "/public/uploads",
+  express.static(path.join(__dirname, "public", "uploads"))
+);
 
 // Dev logging middleware
 if (process.env.NODE_ENV === "development") {
