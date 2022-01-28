@@ -16,6 +16,10 @@ const UserSchema = new mongoose.Schema(
     },
     birthday: String,
     address: String,
+    bonus: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     toJSON: { virtuals: true },

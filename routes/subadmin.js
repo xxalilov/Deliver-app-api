@@ -10,13 +10,13 @@ const {
   deleteSubadmin,
 } = require("../controllers/subadmin");
 
-const { protect } = require("../middleware/adminAuth");
+const { adminProtect } = require("../middleware/auth");
 
-router.route("/").get(protect, getAllSubadmins).post(protect, addSubadmin);
-router.route("/:id").get(protect, getSubadmin);
+router.route("/").get(adminProtect, getAllSubadmins).post(adminProtect, addSubadmin);
+router.route("/:id").get(adminProtect, getSubadmin);
 router.post("/login", loginSubadmin);
-router.put("/updatedetails/:id", protect, updateSubadminDetails);
-router.put("/updatepassword/:id", protect, updateSubadminPassword);
-router.delete("/delete/:id", protect, deleteSubadmin);
+router.put("/updatedetails/:id", adminProtect, updateSubadminDetails);
+router.put("/updatepassword/:id", adminProtect, updateSubadminPassword);
+router.delete("/delete/:id", adminProtect, deleteSubadmin);
 
 module.exports = router;

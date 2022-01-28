@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { protect } = require("../middleware/userAuth");
+const { userProtect } = require("../middleware/auth");
 
 const {
   registerUser,
@@ -19,8 +19,8 @@ router.use("/:userId/order", orderRouter);
 router.get("/", getAllUsers);
 router
   .route("/:id")
-  .put(protect, updateUserDetails)
-  .delete(protect, deleteUser);
+  .put(userProtect, updateUserDetails)
+  .delete(userProtect, deleteUser);
 
 router.post("/register", registerUser);
 router.post("/register/checkcode", checkCode);

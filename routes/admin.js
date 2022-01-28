@@ -7,15 +7,17 @@ const {
   forgotPassword,
   updateAdminDetails,
   updateAdminPassword,
+  logout,
 } = require("../controllers/admin");
 
-const { protect } = require("../middleware/adminAuth");
+const { adminProtect, userProtect } = require("../middleware/auth");
 
-router.get("/me", protect, getAdmin);
-router.put("/updatedetails", protect, updateAdminDetails);
-router.put("/updatepassword", protect, updateAdminPassword);
+router.get("/me", adminProtect, getAdmin);
+router.put("/updatedetails", adminProtect, updateAdminDetails);
+router.put("/updatepassword", adminProtect, updateAdminPassword);
 router.post("/register", createAdmin);
 router.post("/login", loginAdmin);
+router.get("/logout", userProtect, logout);
 router.post("/forgotpassword", forgotPassword);
 
 module.exports = router;

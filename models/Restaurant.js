@@ -44,12 +44,6 @@ const RestaurantSchema = new mongoose.Schema(
 
 // Cascade delete courses when a bootcamp is deleted
 RestaurantSchema.pre("remove", async function (next) {
-  let meals = await this.model("Meal");
-  meals = meals.findById({ restaurant: this._id });
-  console.log(meals.scheam.image);
-  // meals.map((m) => {
-  //   if (m.image !== "no-photo.jpg") deleteFile(m.image);
-  // });
   await this.model("Meal").deleteMany({ restaurant: this._id });
   next();
 });

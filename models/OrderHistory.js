@@ -35,7 +35,7 @@ const OrderHistorySchema = new mongoose.Schema({
   position: {
     type: [String],
     required: true,
-    enum: ["start", "active", "cooking", "way", "finally", "success"],
+    enum: ["start", "active", "cooking", "way", "finally"],
   },
   deliver: {
     type: mongoose.ObjectId,

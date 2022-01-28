@@ -7,7 +7,7 @@ const {
   updateReview,
   deleteReview,
 } = require("../controllers/review");
-const { protect } = require("../middleware/userAuth");
+const { userProtect } = require("../middleware/auth");
 
 const router = express.Router({ mergeParams: true });
 
@@ -23,12 +23,12 @@ router
     }),
     getReviews
   )
-  .post(protect, addReview);
+  .post(userProtect, addReview);
 
 router
   .route("/:id")
   .get(getReview)
-  .put(protect, updateReview)
-  .delete(protect, deleteReview);
+  .put(userProtect, updateReview)
+  .delete(userProtect, deleteReview);
 
 module.exports = router;

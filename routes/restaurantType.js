@@ -6,14 +6,17 @@ const {
   deleteRestaurantTypes,
 } = require("../controllers/restaurantType");
 
-const { protect } = require("../middleware/adminAuth");
+const { adminProtect } = require("../middleware/auth");
 
 const router = express.Router();
 
-router.route("/").get(getRestaurantTypes).post(protect, postRestaurantTypes);
+router
+  .route("/")
+  .get(getRestaurantTypes)
+  .post(adminProtect, postRestaurantTypes);
 router
   .route("/:id")
-  .put(protect, updateRestaurantTypes)
-  .delete(protect, deleteRestaurantTypes);
+  .put(adminProtect, updateRestaurantTypes)
+  .delete(adminProtect, deleteRestaurantTypes);
 
 module.exports = router;

@@ -6,9 +6,14 @@ const {
   getDelivers,
   getActiveDelivers,
   updateDeliverWork,
+  loginDeliver,
 } = require("../controllers/deliver");
 
-const { protect } = require("../middleware/adminAuth");
+const {
+  adminProtect,
+  subadminProtect,
+  deliverProtect,
+} = require("../middleware/auth");
 
 const advancedResults = require("../middleware/advancedResults");
 const Deliver = require("../models/Deliver");
@@ -21,15 +26,17 @@ router.use("/:id/orders", orderRouter);
 
 router
   .route("/")
-  .get(protect, advancedResults(Deliver), getDelivers)
-  .post(createDeliver);
+  .get(adminProtect, advancedResults(Deliver), getDelivers)
+  .post(subadminProtect, createDeliver);
 
-router.get("/active", getActiveDelivers);
+router.get("/active", subadminProtect, getActiveDelivers);
 
 router
   .route("/:id")
-  .get(getDeliver)
-  .delete(deleteDeliver)
-  .put(updateDeliverWork);
+  .get(subadminProtect, getDeliver)
+  .delete(subadminProtect, deleteDeliver)
+  .put(deliverProtect, updateDeliverWork);
+
+router.post("/login", loginDeliver);
 
 module.exports = router;

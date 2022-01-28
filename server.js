@@ -3,6 +3,12 @@ const express = require("express");
 const colors = require("colors");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
+const mongoSanitize = require("express-mongo-sanitize");
+const helmet = require("helmet");
+const xss = require("xss-clean");
+const rateLimit = require("express-rate-limit");
+const hpp = require("hpp");
+const cors = require("cors");
 const morgan = require("morgan");
 const connectDB = require("./config/db");
 const errorHandler = require("./middleware/error");
@@ -21,6 +27,8 @@ const orderRoute = require("./routes/order");
 const deliverRoute = require("./routes/deliver");
 const reviewRoute = require("./routes/review");
 const orderHistoryRoute = require("./routes/orderHistory");
+const deliverBonusRoute = require("./routes/deliverBonus");
+const userBonusRoute = require("./routes/userBonus");
 
 // Load env vars
 dotenv.config({ path: "./config/config.env" });
@@ -40,6 +48,29 @@ app.use(cookieParser());
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
 );
+
+// Sanitize data
+app.use(mongoSanitize());
+
+// Set security headers
+app.use(helmet());
+
+// Prevent XSS attacks
+app.use(xss());
+
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 10 * 60 * 1000, // 10 mins
+  max: 100,
+});
+
+app.use(limiter);
+
+// Prevent http param pollution
+app.use(hpp());
+
+// Enable CORS
+app.use(cors());
 
 // Files folder
 app.use("/public/images", express.static(path.join(__dirname, "public")));
@@ -61,6 +92,8 @@ app.use("/api/v1/orders", orderRoute);
 app.use("/api/v1/delivers", deliverRoute);
 app.use("/api/v1/reviews", reviewRoute);
 app.use("/api/v1/orderhistory", orderHistoryRoute);
+app.use("/api/v1/bonuses/deliver", deliverBonusRoute);
+app.use("/api/v1/bonuses/user", userBonusRoute);
 app.use(errorHandler);
 
 // Add headers before the routes are defined

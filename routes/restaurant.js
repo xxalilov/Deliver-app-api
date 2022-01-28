@@ -7,7 +7,7 @@ const {
   deleteRestaurant,
 } = require("../controllers/restaurant");
 
-const { protect } = require("../middleware/adminAuth");
+const { adminProtect } = require("../middleware/auth");
 
 const Restaurant = require("../models/Restaurant");
 const advancedResults = require("../middleware/advancedResults");
@@ -25,11 +25,11 @@ router.use("/:restaurantId/reviews", reviewRouter);
 router
   .route("/")
   .get(advancedResults(Restaurant, "meals"), getRestaurants)
-  .post(protect, addRestaurant);
+  .post(adminProtect, addRestaurant);
 router
   .route("/:id")
   .get(getRestaurant)
-  .put(protect, updateRestaurant)
-  .delete(protect, deleteRestaurant);
+  .put(adminProtect, updateRestaurant)
+  .delete(adminProtect, deleteRestaurant);
 
 module.exports = router;

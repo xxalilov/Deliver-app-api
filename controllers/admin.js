@@ -85,6 +85,21 @@ exports.getAdmin = asyncHandler(async (req, res, next) => {
   }
 });
 
+// @desc    Log admin out / clear cookie
+// @route   GET /api/v1/admin/logout
+// @access  Private
+exports.logout = asyncHandler(async (req, res, next) => {
+  res.cookie("token", "none", {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  });
+
+  res.status(200).json({
+    success: true,
+    data: {},
+  });
+});
+
 // @desc    Forgot password
 // @route   POST /api/v1/admin/forgotpassword
 // @access  Public

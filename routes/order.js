@@ -8,10 +8,19 @@ const {
   orderToDeliver,
 } = require("../controllers/order");
 
+const { userProtect, subadminProtect } = require("../middleware/auth");
+
 const router = express.Router({ mergeParams: true });
 
-router.route("/").get(getOrders).post(createOrder);
-router.route("/:id").get(getOrder).put(updateOrderPosition).delete(deleteOrder);
-router.route("/:id/deliver").put(orderToDeliver);
+router
+  .route("/")
+  .get(subadminProtect, getOrders)
+  .post(userProtect, createOrder);
+router
+  .route("/:id")
+  .get(getOrder)
+  .put(subadminProtect, updateOrderPosition)
+  .delete(subadminProtect, deleteOrder);
+router.route("/:id/deliver").put(subadminProtect, orderToDeliver);
 
 module.exports = router;

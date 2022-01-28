@@ -7,7 +7,7 @@ const {
   deleteMeal,
 } = require("../controllers/meal");
 
-const { protect } = require("../middleware/adminAuth");
+const { adminProtect, userProtect } = require("../middleware/auth");
 
 const Meal = require("../models/Meal");
 const advancedResults = require("../middleware/advancedResults");
@@ -17,11 +17,11 @@ const router = express.Router({ mergeParams: true });
 router
   .route("/")
   .get(advancedResults(Meal, "restaurant"), getMeals)
-  .post(protect, addMeal);
+  .post(adminProtect, addMeal);
 router
   .route("/:id")
   .get(getMeal)
-  .put(protect, updateMeal)
-  .delete(protect, deleteMeal);
+  .put(adminProtect, updateMeal)
+  .delete(adminProtect, deleteMeal);
 
 module.exports = router;
